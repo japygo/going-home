@@ -1,5 +1,6 @@
 package com.project.goinghome.flight.domain;
 
+import com.project.goinghome.common.domain.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +20,7 @@ import java.time.LocalDateTime;
 @Table(name = "flight")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Flight {
+public class Flight extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +59,16 @@ public class Flight {
     private Integer fare;
 
     private Flight(Airline airline, String flightNumber, Airport departure, LocalDateTime departureAt,
-                  Airport arrival, LocalDateTime arrivalAt, SeatClass seatClass, Integer seatCount, Integer fare) {
+                   Airport arrival, LocalDateTime arrivalAt, SeatClass seatClass, Integer seatCount, Integer fare) {
+        validateAirline(airline);
+        validateFlightNumber(flightNumber);
+        validateDeparture(departure);
+        validateDepartureAt(departureAt);
+        validateArrival(arrival);
+        validateArrivalAt(arrivalAt);
+        validateSeatClass(seatClass);
+        validateSeatCount(seatCount);
+        validateFare(fare);
         this.airline = airline;
         this.flightNumber = flightNumber;
         this.departure = departure;
@@ -67,6 +78,66 @@ public class Flight {
         this.seatClass = seatClass;
         this.seatCount = seatCount;
         this.fare = fare;
+    }
+
+    private void validateAirline(Airline airline) {
+        if (airline == null) {
+            throw new IllegalArgumentException("Airline cannot be null");
+        }
+    }
+
+    private void validateFlightNumber(String flightNumber) {
+        if (!StringUtils.hasText(flightNumber)) {
+            throw new IllegalArgumentException("Invalid flight number");
+        }
+    }
+
+    private void validateDeparture(Airport departure) {
+        if (departure == null) {
+            throw new IllegalArgumentException("Departure cannot be null");
+        }
+    }
+
+    private void validateDepartureAt(LocalDateTime departureAt) {
+        if (departureAt == null) {
+            throw new IllegalArgumentException("DepartureAt cannot be null");
+        }
+    }
+
+    private void validateArrival(Airport arrival) {
+        if (arrival == null) {
+            throw new IllegalArgumentException("Arrival cannot be null");
+        }
+    }
+
+    private void validateArrivalAt(LocalDateTime arrivalAt) {
+        if (arrivalAt == null) {
+            throw new IllegalArgumentException("ArrivalAt cannot be null");
+        }
+    }
+
+    private void validateSeatClass(SeatClass seatClass) {
+        if (seatClass == null) {
+            throw new IllegalArgumentException("SeatClass cannot be null");
+        }
+    }
+
+    private void validateSeatCount(Integer seatCount) {
+        if (seatCount == null) {
+            throw new IllegalArgumentException("SeatCount cannot be null");
+        }
+        if (seatCount < 0) {
+            throw new IllegalArgumentException("Seat count cannot be negative");
+        }
+    }
+
+    private void validateFare(Integer fare) {
+        if (fare == null) {
+            throw new IllegalArgumentException("Fare cannot be null");
+        }
+        if (fare < 0) {
+            throw new IllegalArgumentException("Fare cannot be negative");
+        }
     }
 
     public static FlightBuilder builder() {
