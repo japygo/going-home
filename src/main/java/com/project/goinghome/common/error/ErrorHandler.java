@@ -19,9 +19,7 @@ public class ErrorHandler {
     public ResponseEntity<ErrorResponse> badRequest(BadRequestException e) {
         log.error("BadRequestException : {}", e.getMessage(), e);
         return ResponseEntity.badRequest()
-                .body(ErrorResponse.builder()
-                        .code(HttpStatus.BAD_REQUEST.value())
-                        .message(e.getMessage()).build());
+                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
     @ExceptionHandler({
@@ -31,8 +29,6 @@ public class ErrorHandler {
     public ResponseEntity<ErrorResponse> exception(Exception e) {
         log.error("그 외 Exception : {}", e.getMessage(), e);
         return ResponseEntity.internalServerError()
-                .body(ErrorResponse.builder()
-                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message(e.getMessage()).build());
+                .body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 }
