@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,7 +40,7 @@ class RestTemplateExternalApiServiceTest {
 
         String response = "{ \"data\": \"ok\" }";
 
-        mockServer.expect(requestTo(url + "?data=test"))
+        mockServer.expect(ExpectedCount.once(), requestTo(url + "?data=test"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
 
@@ -59,7 +60,7 @@ class RestTemplateExternalApiServiceTest {
 
         String response = "ok";
 
-        mockServer.expect(requestTo(url + "?data=test"))
+        mockServer.expect(ExpectedCount.once(), requestTo(url + "?data=test"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(response, MediaType.TEXT_PLAIN));
 
@@ -79,7 +80,7 @@ class RestTemplateExternalApiServiceTest {
 
         String response = "{ \"data\": \"ok\" }";
 
-        mockServer.expect(requestTo(url))
+        mockServer.expect(ExpectedCount.once(), requestTo(url))
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
 
@@ -99,7 +100,7 @@ class RestTemplateExternalApiServiceTest {
 
         String response = "ok";
 
-        mockServer.expect(requestTo(url))
+        mockServer.expect(ExpectedCount.once(), requestTo(url))
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withSuccess(response, MediaType.TEXT_PLAIN));
 
