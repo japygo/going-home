@@ -3,6 +3,7 @@ package com.project.goinghome.flight.api.naver;
 import com.project.goinghome.common.api.ExternalApiService;
 import com.project.goinghome.flight.api.ExternalFlightFindService;
 import com.project.goinghome.flight.api.naver.dto.NaverFlightRequest;
+import com.project.goinghome.flight.api.naver.dto.NaverFlightRequest.Variables.Itinerary;
 import com.project.goinghome.flight.api.naver.dto.NaverFlightResponse;
 import com.project.goinghome.flight.domain.Airport;
 import com.project.goinghome.flight.domain.FareType;
@@ -24,8 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NaverFlightFindService implements ExternalFlightFindService {
 
-    public static final String NAVER_REQUEST_OPERATION_NAME = "domesticFlights";
-    public static final String NAVER_REQUEST_DEVICE = "PC";
+    private static final String NAVER_REQUEST_OPERATION_NAME = "domesticFlights";
+    private static final String NAVER_REQUEST_DEVICE = "PC";
 
     @Value("${naver.api.url}")
     String apiUrl;
@@ -46,12 +47,12 @@ public class NaverFlightFindService implements ExternalFlightFindService {
                 .operationName(NAVER_REQUEST_OPERATION_NAME)
                 .variables(NaverFlightRequest.Variables.builder()
                         .itinerary(List.of(
-                                NaverFlightRequest.Variables.Itinerary.builder()
+                                Itinerary.builder()
                                         .departureAirport(departure.code())
                                         .arrivalAirport(arrival.code())
                                         .departureDate(departureDateFormat)
                                         .build(),
-                                NaverFlightRequest.Variables.Itinerary.builder()
+                                Itinerary.builder()
                                         .departureAirport(arrival.code())
                                         .arrivalAirport(departure.code())
                                         .departureDate(departureDateFormat)
