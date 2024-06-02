@@ -66,7 +66,7 @@ class FlightQueryRepositoryTest {
                         .arrivalAt(LocalDateTime.of(2024, 4, 1, 12, 40))
                         .seatClass(SeatClass.Y)
                         .seatCount(10)
-                        .fare(10000)
+                        .fare(20000)
                         .build(),
                 Flight.builder()
                         .airline(Airline.AAR)
@@ -95,5 +95,6 @@ class FlightQueryRepositoryTest {
 
         // then
         assertThat(actual).hasSize(2);
+        assertThat(actual.get(0).getFare()).isEqualTo(10000);
     }
 }

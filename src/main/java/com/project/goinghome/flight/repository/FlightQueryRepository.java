@@ -29,6 +29,7 @@ public class FlightQueryRepository {
                         arrivalEqual(arrival),
                         departureDateBetween(departureDate)
                 )
+                .orderBy(flight.fare.asc())
                 .fetch();
     }
 
