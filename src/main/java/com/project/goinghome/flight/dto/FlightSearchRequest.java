@@ -1,5 +1,6 @@
 package com.project.goinghome.flight.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,10 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class FlightSearchRequest {
 
+    @NotBlank
+    @Size(min = 1, max = 1)
+    private final String searchType;
+
     @NotBlank(message = "departure 값이 없습니다")
     @Size(min = 3, max = 3, message = "잘못된 departure 형식입니다")
     private final String departure;
@@ -32,4 +37,7 @@ public class FlightSearchRequest {
     @NotNull(message = "endDate 값이 없습니다")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private final LocalDate endDate;
+
+    @Min(1)
+    private final Integer days;
 }
