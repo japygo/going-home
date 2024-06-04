@@ -22,6 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FlightFindService {
 
+    private static final int FLIGHT_PAIR_LIMIT = 5;
+
     private final FlightQueryRepository flightQueryRepository;
 
     public FlightSearchResponse findFlightBySearch(FlightSearchRequest request) {
@@ -60,8 +62,10 @@ public class FlightFindService {
         while (departureDate.isBefore(endDate)) {
             LocalDate arrivalDate = departureDate.plusDays(days);
 
-            List<Flight> departureFlights = flightQueryRepository.findByItinerary(departure, arrival, departureDate);
-            List<Flight> arrivalFlights = flightQueryRepository.findByItinerary(arrival, departure, arrivalDate);
+            List<Flight> departureFlights =
+                    flightQueryRepository.findByItinerary(departure, arrival, departureDate, FLIGHT_PAIR_LIMIT);
+            List<Flight> arrivalFlights =
+                    flightQueryRepository.findByItinerary(arrival, departure, arrivalDate, FLIGHT_PAIR_LIMIT);
 
             for (Flight departureFlight : departureFlights) {
                 for (Flight arrivalFlight : arrivalFlights) {

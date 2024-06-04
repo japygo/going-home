@@ -33,6 +33,18 @@ public class FlightQueryRepository {
                 .fetch();
     }
 
+    public List<Flight> findByItinerary(Airport departure, Airport arrival, LocalDate departureDate, long limit) {
+        return queryFactory.selectFrom(flight)
+                .where(
+                        departureEqual(departure),
+                        arrivalEqual(arrival),
+                        departureDateBetween(departureDate)
+                )
+                .orderBy(flight.fare.asc())
+                .limit(limit)
+                .fetch();
+    }
+
     private BooleanExpression departureEqual(Airport departure) {
         if (departure != null) {
             return flight.departure.eq(departure);
